@@ -28,21 +28,26 @@ class CustomersController extends Controller
 
     public function ShowCustomer(Request $request)
     {
-        $Customer = Customer::where('id',$request->Customer_id)->first();
-        $Invoices = Electronicinvoice::where('customer_id',$request->Customer_id)->get();
-        $Cars     = Car::where('customer_id',$request->Customer_id)->get();
-
-        $this->data = [
-            'value' => true,
-            'data' => [
-                    'Customer'  =>  $Customer,
-                    'Car'       =>  $Cars,
-                    'Invoice'   =>  $Invoices,
-            ],
-                    'code'      => 200,
-        ];
-
-        return response()->json($this->data, $this->data['code']);
+        if(!empty($request->Customer_id)){
+            $Customer = Customer::where('id',$request->Customer_id)->first();
+            $Invoices = Electronicinvoice::where('customer_id',$request->Customer_id)->get();
+            $Cars     = Car::where('customer_id',$request->Customer_id)->get();
+    
+            $this->data = [
+                'value' => true,
+                'data' => [
+                        'Customer'  =>  $Customer,
+                        'Car'       =>  $Cars,
+                        'Invoice'   =>  $Invoices,
+                ],
+                        'code'      => 200,
+            ];
+    
+            return response()->json($this->data, $this->data['code']);
+        }else{
+            return response()->json(['status'=>false,'message'=>'There is something wrong','code'=>400],400);
+        }
+        
     }
     
 }
