@@ -19,7 +19,8 @@ class StatisticController extends Controller
         $Invoices = Electronicinvoice::where('branch_id',auth()->user()->branch_id)->count();
         $Jobs = Electronicinvoice::where([
             'branch_id' => auth()->user()->branch_id,
-            'final' => 0
+            'final' => 0,
+            'deleted_at' => NULL
             ])->count();
 
         return response()->json([
