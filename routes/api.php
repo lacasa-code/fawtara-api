@@ -25,4 +25,7 @@ Route::middleware(['api'])->group(function () {
 //user route 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', [App\Http\Controllers\Api\StatisticController::class, 'GetStatistic']);
+
+    Route::get('/listcustomers', [App\Http\Controllers\Api\CustomersController::class, 'GetListCustomers']);
+
 });
