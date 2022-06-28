@@ -18,7 +18,7 @@ class CustomersController extends Controller
 
     public function GetListCustomers()
     {
-        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->get();
+        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->orderBy('id', 'desc')->get();
         
         return response()->json([
             'status'=>true,
@@ -31,8 +31,8 @@ class CustomersController extends Controller
     {
         if(!empty($request->Customer_id)){
             $Customer = Customer::where('id',$request->Customer_id)->first();
-            $Invoices = Electronicinvoice::where('customer_id',$request->Customer_id)->get();
-            $Cars     = Car::where('customer_id',$request->Customer_id)->get();
+            $Invoices = Electronicinvoice::where('customer_id',$request->Customer_id)->orderBy('id', 'desc')->get();
+            $Cars     = Car::where('customer_id',$request->Customer_id)->orderBy('id', 'desc')->get();
     
             $this->data = [
                 'value' => true,
@@ -83,6 +83,11 @@ class CustomersController extends Controller
                             'code'=>201,
                             'data'=>$customer,
                         ],201);
+    }
+
+    public function updateCustomer($id,Request $request)
+    {
+        $customer = Customer::where('id',$id)->first();
     }
     
 }

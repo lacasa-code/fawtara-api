@@ -6,7 +6,6 @@ use App\Models\Car;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\CarAddEditFormRequest;
 
 class CarController extends Controller
 {
@@ -18,7 +17,7 @@ class CarController extends Controller
             'manufacturing_date' => 'required',            
             'chassis' => 'required|min:17|max:17',            
             'model' => 'required',            
-            'customer_id',    
+            'customer_id'=> 'required',  
             'reg_chars'=>'required|regex:/^[A-Za-z]+$/' 
         
         ]);
