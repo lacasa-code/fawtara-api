@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/add/customer', [App\Http\Controllers\Api\CustomersController::class, 'AddCustomer']);
     Route::post('/update/customer/{id}', [App\Http\Controllers\Api\CustomersController::class, 'updateCustomer']);
+    Route::post('/delete/customer/{id}', [App\Http\Controllers\Api\CustomersController::class, 'delete']);
 
     Route::get('/listcustomers', [App\Http\Controllers\Api\CustomersController::class, 'GetListCustomers']);
     Route::post('/showcustomer', [App\Http\Controllers\Api\CustomersController::class, 'ShowCustomer']);

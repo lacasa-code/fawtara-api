@@ -90,7 +90,7 @@ class CustomersController extends Controller
         if (!$customer)
         {
             return response()->json(['status'=>false,
-            'message'=>trans('Not found user'),
+            'message'=>trans('User Not found '),
             'code'=>404,
             ],404);
         }
@@ -120,6 +120,23 @@ class CustomersController extends Controller
             'message'=>'Customer data updated successfully',
             'code'=>200,
             'data'=>$customer,
+        ],200);
+    }
+
+    public function delete($id)
+    {
+        $customer = Customer::where('id',$id)->firstorfail()->delete();
+        if (!$customer)
+        {
+            return response()->json(['status'=>false,
+            'message'=>trans('User Not found '),
+            'code'=>404,
+            ],404);
+        }
+        return response()->json([
+            'status'=>true,
+            'message'=>'Customer deleted successfully',
+            'code'=>200,
         ],200);
     }
     
