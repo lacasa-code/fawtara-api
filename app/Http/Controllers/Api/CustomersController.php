@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\Electronicinvoice;
 use App\Models\Car;
-
-
+use App\Models\Customer;
+use Illuminate\Http\Request;
+use App\Models\Electronicinvoice;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CustomerAddFormRequest;
 
 class CustomersController extends Controller
 {
@@ -48,6 +48,29 @@ class CustomersController extends Controller
             return response()->json(['status'=>false,'message'=>'There is something wrong','code'=>400],400);
         }
         
+    }
+
+    public function AddCustomer(CustomerAddFormRequest $request)
+    {
+        $name = $request->name;
+		$address = $request->address;
+		$phone = $request->phone;
+		$mail = $request->mail;
+
+		$customer = new Customer;
+		$customer->name = $name;
+		$customer->phone = $phone;
+		$customer->mail = $mail;
+		$customer->address = $address;
+		$customer->branch_id = Auth::user()->branch_id;
+
+        $customer->save();
+
+        return response()->json(['status'=>true,
+                            'message'=>trans('customer created successfully'),
+                            'code'=>201,
+                            'data'=>$customer,
+                        ],201);
     }
     
 }

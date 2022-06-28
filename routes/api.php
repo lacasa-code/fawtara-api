@@ -26,8 +26,10 @@ Route::middleware(['api'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', [App\Http\Controllers\Api\StatisticController::class, 'GetStatistic']);
 
-    Route::post('/addcustomer', [App\Http\Controllers\Api\CustomersController::class, 'AddCustomer']);
+    Route::post('/add/customer', [App\Http\Controllers\Api\CustomersController::class, 'AddCustomer']);
     Route::get('/listcustomers', [App\Http\Controllers\Api\CustomersController::class, 'GetListCustomers']);
     Route::post('/showcustomer', [App\Http\Controllers\Api\CustomersController::class, 'ShowCustomer']);
 
 });
+
+//customer routes
