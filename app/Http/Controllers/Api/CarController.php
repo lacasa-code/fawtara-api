@@ -59,7 +59,7 @@ class CarController extends Controller
         $car=Car::where('id',$id)->first();
         if (!$car)
         {
-            return response()->json(['status'=>true,
+            return response()->json(['status'=>false,
             'message'=>trans('Not found car'),
             'code'=>404,
             ],404);

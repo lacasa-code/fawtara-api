@@ -89,7 +89,7 @@ class CustomersController extends Controller
         $customer = Customer::where('id',$id)->first();
         if (!$customer)
         {
-            return response()->json(['status'=>true,
+            return response()->json(['status'=>false,
             'message'=>trans('Not found user'),
             'code'=>404,
             ],404);
