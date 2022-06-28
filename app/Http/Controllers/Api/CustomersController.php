@@ -10,6 +10,7 @@ use App\Models\Electronicinvoice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\CustomerAddFormRequest;
 
 class CustomersController extends Controller
@@ -52,6 +53,17 @@ class CustomersController extends Controller
 
     public function AddCustomer(CustomerAddFormRequest $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
+            'mail' => 'required|email|unique:customers,mail,'.$this->id,
+            'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone,'.$this->id,
+            'address' => 'required', 
+        
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
         $name = $request->name;
 		$address = $request->address;
 		$phone = $request->phone;

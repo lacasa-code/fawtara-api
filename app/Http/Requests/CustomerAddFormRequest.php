@@ -30,7 +30,7 @@ class CustomerAddFormRequest extends FormRequest
     public function messages()
     {
         return [
-              'name.required' => trans('app.customer name is required.'),
+            'name.required' => trans('app.customer name is required.'),
             'name.regex'  => trans('app.customer name is only alphabets and space.'),
             'name.max' => trans('app.customer name should not more than 50 character.'),
 
