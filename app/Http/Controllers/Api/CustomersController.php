@@ -55,8 +55,8 @@ class CustomersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
-            'mail' => 'required|email|unique:customers,mail,'.$this->id,
-            'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone,'.$this->id,
+            'mail' => 'required|email|unique:customers,mail',
+            'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone',
             'address' => 'required', 
         
         ]);
