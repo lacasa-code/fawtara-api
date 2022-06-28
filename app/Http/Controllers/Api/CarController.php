@@ -15,7 +15,7 @@ class CarController extends Controller
             'manufacturing' => 'required|regex:/^[A-Za-z]+$/',            
             'registration' => 'required',            
             'manufacturing_date' => 'required',            
-            'chassis' => 'required|min:17|max:17',            
+            'chassis' => 'required|min:17|max:17|unique:cars,chassis',            
             'model' => 'required',            
             'customer_id'=> 'required',  
             'reg_chars'=>'required|regex:/^[A-Za-z]+$/' 
@@ -52,5 +52,49 @@ class CarController extends Controller
         'data'=>$car,
         ],201);
 			
+    }
+
+    public function updateCar($id,Request $request)
+    {
+        $car=Car::where('id',$id)->first();
+        if (!$car)
+        {
+            return response()->json(['status'=>true,
+            'message'=>trans('Not found car'),
+            'code'=>404,
+            ],404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'manufacturing' => 'required|regex:/^[A-Za-z]+$/',            
+            'registration' => 'required',            
+            'manufacturing_date' => 'required',            
+            'model' => 'required',            
+            'customer_id'=> 'required',  
+            'reg_chars'=>'required|regex:/^[A-Za-z]+$/' ,
+            'chassis' => ['required', 'min:17','max:17','unique:cars,chassis,'.$car->id],
+
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+
+        $car->manufacturing =$request->input('manufacturing');
+		$car->registration = $request->input('registration');
+		$car->manufacturing_date = $request->input('manufacturing_date');
+		$car->chassis = $request->input('chassis');
+		$car->model =$request->input('model');
+		$car->customer_id =$request->input('customer_id');
+		$car->reg_chars=$request->input('reg_chars');
+
+        $car->save();
+
+        return response()->json(['status'=>true,
+                                'message'=>trans('car updated successfully'),
+                                'code'=>200,
+                                'data'=>$car,
+                            ],200);
+
     }
 }

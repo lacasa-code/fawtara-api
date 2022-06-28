@@ -31,7 +31,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/listcustomers', [App\Http\Controllers\Api\CustomersController::class, 'GetListCustomers']);
     Route::post('/showcustomer', [App\Http\Controllers\Api\CustomersController::class, 'ShowCustomer']);
+    
     Route::post('/add/car', [App\Http\Controllers\Api\CarController::class, 'AddCar']);
+    Route::post('/update/car/{id}', [App\Http\Controllers\Api\CarController::class, 'updateCar']);
 
 });
 

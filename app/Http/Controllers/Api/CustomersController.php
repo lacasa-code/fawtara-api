@@ -11,7 +11,6 @@ use App\Models\Electronicinvoice;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\CustomerAddFormRequest;
 
 class CustomersController extends Controller
 {
