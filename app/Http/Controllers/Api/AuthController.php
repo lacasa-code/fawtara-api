@@ -78,7 +78,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'status'=>true,
-            'message'=>trans('app.userProfile'),
+            'message'=>trans('User profile have been shown successfuly'),
             'code'=>200,
             'data' => auth()->user()           
         ],200);

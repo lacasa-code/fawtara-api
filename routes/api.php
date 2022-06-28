@@ -19,10 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['api'])->group(function () {
     Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+    Route::post('/profile', [App\Http\Controllers\Api\AuthController::class, 'userProfile']);
+
 });
 
 
-//user route 
+//Customer route 
 Route::middleware(['auth'])->group(function () {
     Route::get('/statistics', [App\Http\Controllers\Api\StatisticController::class, 'GetStatistic']);
 
