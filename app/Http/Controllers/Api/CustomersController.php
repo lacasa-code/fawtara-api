@@ -51,7 +51,7 @@ class CustomersController extends Controller
         
     }
 
-    public function AddCustomer(CustomerAddFormRequest $request)
+    public function AddCustomer(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
