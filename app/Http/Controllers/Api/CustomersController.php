@@ -88,6 +88,40 @@ class CustomersController extends Controller
     public function updateCustomer($id,Request $request)
     {
         $customer = Customer::where('id',$id)->first();
+        if (!$customer)
+        {
+            return response()->json(['status'=>true,
+            'message'=>trans('Not found user'),
+            'code'=>404,
+            ],404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
+            //'mail' => 'required|email|unique:customers,mail',
+            //'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone',
+            'address' => 'required', 
+            'phone' => ['required', 'min:9','max:9','regex:/^[- +()]*[0-9][- +()0-9]*$/' ,'unique:customers,phone,'.$customer->id],
+            'mail' => ['required','string', 'email','unique:customers,mail,'.$customer->id],
+
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+
+        $customer->name=$request->input('name');
+        $customer->address=$request->input('address');
+        $customer->mail=$request->input('mail');
+        $customer->phone=$request->input('phone');
+
+        $customer->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>'Customer data updated successfully',
+            'code'=>200,
+            'data'=>$customer,
+        ],200);
     }
     
 }
