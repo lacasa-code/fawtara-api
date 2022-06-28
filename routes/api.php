@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/add/car', [App\Http\Controllers\Api\CarController::class, 'AddCar']);
     Route::post('/update/car/{id}', [App\Http\Controllers\Api\CarController::class, 'updateCar']);
+    Route::post('/delete/car/{id}', [App\Http\Controllers\Api\CarController::class, 'delete']);
 
 });
 

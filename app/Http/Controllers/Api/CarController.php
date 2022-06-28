@@ -97,4 +97,15 @@ class CarController extends Controller
                             ],200);
 
     }
+
+    public function delete($id)
+    {
+        $car = Car::where('id',$id)->firstorfail()->delete();
+        
+        return response()->json([
+            'status'=>true,
+            'message'=>'Car deleted successfully',
+            'code'=>200,
+        ],200);
+    }
 }
