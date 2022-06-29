@@ -108,4 +108,35 @@ class CarController extends Controller
             'code'=>200,
         ],200);
     }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $car=Car::where(function ($query) use($keyword) {
+            $query->where('manufacturing', 'like', '%' . $keyword . '%')
+               ->orWhere('registration', 'like', '%' . $keyword . '%')
+               ->orWhere('manufacturing_date', 'like', '%' . $keyword . '%')
+               ->orWhere('chassis', 'like', '%' . $keyword . '%')
+               ->orWhere('model', 'like', '%' . $keyword . '%')
+               ->orWhere('id', 'like', '%' . $keyword . '%')
+               ->orWhere('reg_chars', 'like', '%' . $keyword . '%');
+
+          })
+            ->get();
+        if (!$car)
+        {
+            return response()->json(['status'=>false,
+                'message'=>trans('No data found '),
+                'code'=>404,
+                ],404);
+        }
+            
+        return response()->json([
+                'status'=>true,
+                'message'=>'search result',
+                'code'=>200,
+                'data'=>$car,
+            ],200);
+
+    }
 }
