@@ -44,4 +44,9 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-//car routes
+//invoices routes
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/final/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'final_invoice']);
+
+});
