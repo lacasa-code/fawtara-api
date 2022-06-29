@@ -24,4 +24,21 @@ class InvoiceController extends Controller
                      ],200);
 
     }
+
+    public function pending_invoice()
+    {
+        $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
+                                ->where('final',0)
+                                ->whereNull('deleted_at')
+                                ->orderBy('id','DESC')
+                                ->get();
+
+            return response()->json([
+                        'status'=>true,
+                        'message'=>'Pending invoices have been shown successfully',
+                        'code'=>200,
+                        'data'=>$invoice,
+                     ],200);
+
+    }
 }
