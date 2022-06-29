@@ -135,13 +135,16 @@ class CustomersController extends Controller
 
     public function search(Request $request)
     {
-        $advance_qry = trim($request->query('search'));
-        $requestData = ['name', 'address', 'phone' , 'mail' , 'id'];
-        $customer = Customer::where(function($q) use($requestData, $advance_qry) {
-            foreach ($requestData as $field)
-               $q->orWhere($field, 'like', "%{$advance_qry}%");
-            })->get();
+        $keyword = $request->input('keyword');
+        $customer=Customer::where(function ($query) use($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+               ->orWhere('address', 'like', '%' . $keyword . '%')
+               ->orWhere('phone', 'like', '%' . $keyword . '%')
+               ->orWhere('id', 'like', '%' . $keyword . '%')
+               ->orWhere('mail', 'like', '%' . $keyword . '%');
 
+          })
+            ->get();
         if (!$customer)
         {
             return response()->json(['status'=>false,
