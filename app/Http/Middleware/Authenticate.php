@@ -24,7 +24,7 @@ class Authenticate extends Middleware
 
         }
         return response()->json(['status'=>false,
-        'message'=>trans('app.validation_error'),
+        'message'=>trans('Unauthorized user'),
         'code'=>401],
         401);
     }

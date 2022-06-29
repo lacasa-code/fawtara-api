@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+    //list all final invoices
     public function final_invoice()
     {
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
@@ -25,6 +26,7 @@ class InvoiceController extends Controller
 
     }
 
+    //list all pending invocies
     public function pending_invoice()
     {
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
@@ -39,6 +41,20 @@ class InvoiceController extends Controller
                         'code'=>200,
                         'data'=>$invoice,
                      ],200);
+
+    }
+
+    //show one invoice 
+    public function show_final_invoice($id)
+    {
+        $invoice=Electronicinvoice::where('id',$id)->where('final',1)->first();
+        
+        return response()->json([
+            'status'=>true,
+            'message'=>'invoice have been shown successfully',
+            'code'=>200,
+            'data'=>$invoice,
+         ],200);
 
     }
 }

@@ -49,5 +49,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/final/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'final_invoice']);
     Route::get('/pending/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'pending_invoice']);
+    Route::get('/show/final/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'show_final_invoice']);
 
 });
