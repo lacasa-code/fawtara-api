@@ -96,6 +96,43 @@ class AuthController extends Controller
 
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(auth()->id());
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
+            'lastname' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
+            'password'=> ($this->id)?'nullable|min:6|max:12|regex:/^(?=.*[a-zA-Z\p{L}])(?=.*\d).+$/u':'required|min:6|max:12|regex:/^(?=.*[a-zA-Z\p{L}])(?=.*\d).+$/u',
+            'mobile_no' => ['required', 'min:9','max:9','regex:/^[- +()]*[0-9][- +()0-9]*$/' ,'unique:users,mobile_no,'.$user->id],
+            'email' => ['required','string', 'email','unique:users,email,'.$user->id],
+            'gender'=>'required',
+            'birth_date'=>'required',
+        
+        ]);
+
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+
+        $user->name=$request->input('name');
+        $user->lastname=$request->input('lastname');
+        $user->password=$request->input('password');
+        $user->mobile_no=$request->input('mobile_no');
+        $user->email=$request->input('email');
+        $user->gender=$request->input('gender');
+        $user->birth_date=$request->input('birth_date');
+
+        $user->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>'user data updated successfully',
+            'code'=>200,
+            'data'=>$user,
+        ],200);
+    }
+
     
 
     

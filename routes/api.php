@@ -20,6 +20,7 @@ Route::middleware(['api'])->group(function () {
     Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
     Route::get('/profile', [App\Http\Controllers\Api\AuthController::class, 'userProfile']);
+    Route::post('/update/profile', [App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
 
 });
 
