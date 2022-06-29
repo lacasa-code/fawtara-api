@@ -126,18 +126,37 @@ class CustomersController extends Controller
     public function delete($id)
     {
         $customer = Customer::where('id',$id)->firstorfail()->delete();
-        if (!$customer)
-        {
-            return response()->json(['status'=>false,
-            'message'=>trans('User Not found '),
-            'code'=>404,
-            ],404);
-        }
         return response()->json([
             'status'=>true,
             'message'=>'Customer deleted successfully',
             'code'=>200,
         ],200);
+    }
+
+    public function search(Request $request)
+    {
+        $advance_qry = trim($request->query('search'));
+        $requestData = ['name', 'address', 'phone' , 'mail' , 'id'];
+        $customer = Customer::where(function($q) use($requestData, $advance_qry) {
+            foreach ($requestData as $field)
+               $q->orWhere($field, 'like', "%{$advance_qry}%");
+            })->get();
+
+        if (!$customer)
+        {
+            return response()->json(['status'=>false,
+                'message'=>trans('No data found '),
+                'code'=>404,
+                ],404);
+        }
+            
+        return response()->json([
+                'status'=>true,
+                'message'=>'search result',
+                'code'=>200,
+                'data'=>$customer,
+            ],200);
+
     }
     
 }
