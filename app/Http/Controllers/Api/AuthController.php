@@ -118,7 +118,7 @@ class AuthController extends Controller
 
         $user->name=$request->input('name');
         $user->lastname=$request->input('lastname');
-        $user->password=$request->input('password');
+        $user->password=bcrypt($request->input('password'));
         $user->mobile_no=$request->input('mobile_no');
         $user->email=$request->input('email');
         $user->gender=$request->input('gender');
