@@ -52,5 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/show/final/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'show_final_invoice']);
     Route::get('/show/pending/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'show_pending_invoice']);
     Route::get('/perview/final/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'preview_final_invoice']);
+    
+    Route::post('/invoiced/pending/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'invoiced_pending']);
 
 });

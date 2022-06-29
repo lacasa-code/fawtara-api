@@ -79,11 +79,23 @@ class InvoiceController extends Controller
 
         return response()->json([
                     'status'=>true,
-                    'message'=>'invoice have been shown successfully',
+                    'message'=>'invoice has been shown successfully',
                     'code'=>200,
                     'data'=>$invoice,
                  ],200);
 
 
+    }
+
+    public function invoiced_pending($id)
+    {
+        $invoice=Electronicinvoice::where('id',$id)->where('final',0)->first();
+        $invoice->final = 1 ;
+        return response()->json([
+            'status'=>true,
+            'message'=>'pending invoice has been invoiced successfully',
+            'code'=>200,
+            'data'=>$invoice,
+         ],200);
     }
 }
