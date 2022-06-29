@@ -183,10 +183,9 @@ class InvoiceController extends Controller
                ->orWhere('reg_chars', 'like', '%' . $keyword . '%')
                ->orWhere('registeration', 'like', '%' . $keyword . '%')
                ->orWhere('Status', 'like', '%' . $keyword . '%')
-               ->orWhere('Customer', 'like', '%' . $keyword . '%')
+               ->orWhere('Customer', 'like', '%' . $keyword . '%');
         
-          })
-            ->get();
+          })->get();
         if (!$invoice)
         {
             return response()->json(['status'=>false,
