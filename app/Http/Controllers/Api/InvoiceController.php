@@ -57,4 +57,17 @@ class InvoiceController extends Controller
          ],200);
 
     }
+
+    public function show_pending_invoice($id)
+    {
+        $invoice=Electronicinvoice::where('id',$id)->where('final',0)->first();
+        
+        return response()->json([
+            'status'=>true,
+            'message'=>'invoice have been shown successfully',
+            'code'=>200,
+            'data'=>$invoice,
+         ],200);
+
+    }
 }
