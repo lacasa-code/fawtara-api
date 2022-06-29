@@ -136,7 +136,7 @@ class CustomersController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
-        $customer=Customer::where(function ($query) use($keyword) {
+        $customer=Customer::where('branch_id',auth()->user()->branch_id)->where(function ($query) use($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
                ->orWhere('address', 'like', '%' . $keyword . '%')
                ->orWhere('phone', 'like', '%' . $keyword . '%')

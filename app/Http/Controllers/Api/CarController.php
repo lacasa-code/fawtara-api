@@ -109,10 +109,10 @@ class CarController extends Controller
         ],200);
     }
 
-    public function search(Request $request)
+    public function search($id,Request $request)
     {
         $keyword = $request->input('keyword');
-        $car=Car::where(function ($query) use($keyword) {
+        $car=Car::where('customer_id',$id)->where(function ($query) use($keyword) {
             $query->where('manufacturing', 'like', '%' . $keyword . '%')
                ->orWhere('registration', 'like', '%' . $keyword . '%')
                ->orWhere('manufacturing_date', 'like', '%' . $keyword . '%')
