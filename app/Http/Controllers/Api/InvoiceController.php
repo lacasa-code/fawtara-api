@@ -340,7 +340,7 @@ class InvoiceController extends Controller
                              ->toDateTimeString();
         $page_size=$request->page_size ?? 10 ;
 
-        $invoice = Electronicinvoice::wherer('final',1)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
+        $invoice = Electronicinvoice::where('final',1)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
         return response()->json([
             'status'=>true,
             'message'=>'filter result',
@@ -358,7 +358,7 @@ class InvoiceController extends Controller
                              ->toDateTimeString();
         $page_size=$request->page_size ?? 10 ;
 
-        $invoice = Electronicinvoice::wherer('final',0)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
+        $invoice = Electronicinvoice::where('final',0)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
         return response()->json([
             'status'=>true,
             'message'=>'filter result',

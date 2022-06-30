@@ -103,7 +103,7 @@ class AuthController extends Controller
 
             'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
             'lastname' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
-            'password'=>'required|min:6|max:12|regex:/^(?=.*[a-zA-Z\p{L}])(?=.*\d).+$/u',
+            'password'=>'min:6|max:12|regex:/^(?=.*[a-zA-Z\p{L}])(?=.*\d).+$/u',
             'mobile_no' => ['required', 'min:9','max:9','regex:/^[- +()]*[0-9][- +()0-9]*$/' ,'unique:users,mobile_no,'.$user->id],
             'email' => ['required','string', 'email','unique:users,email,'.$user->id],
             'gender'=>'required',
