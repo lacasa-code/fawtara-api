@@ -174,7 +174,7 @@ class InvoiceController extends Controller
             //$invoice->total_amount       = $services_sum;
             //$invoice->grand_total        = $paid_amount;
             $invoice->tax                = 15;
-            //$invoice->paid_amount        = $paid_amount;
+            $invoice->customer_id        = $request->customer_id;
             $invoice->branch_id          = auth()->user()->branch_id;
 
 		    $invoice->save();
