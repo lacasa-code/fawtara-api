@@ -287,7 +287,7 @@ class InvoiceController extends Controller
 
     public function encode_date($id )
     {
-        $invoice = Electronicinvoice::where('id',$id)->get();
+        $invoice = Electronicinvoice::where('id',$id)->first();
         $invoice_datetimez     = $invoice->Date .' '.$invoice->created_at->format('H:i:s');
         $seller_name   = $invoice->branch_name;
         $vat_registration_number    = $invoice->branch->vat_number;
