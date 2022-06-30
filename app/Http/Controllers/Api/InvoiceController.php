@@ -204,8 +204,8 @@ class InvoiceController extends Controller
         $service->invoice_id= $request->invoice_id;
         $service->save();
         
-        $sub_sum = Invoiceservice::where('invoice_id', $service->invoice_id)->sum('sub_total');
-        $invoice = Electronicinvoice::where('id', $service->invoice_id)->first();
+        $sub_sum = Invoiceservice::where('invoice_id', $request->invoice_id)->sum('sub_total');
+        $invoice = Electronicinvoice::where('id', $request->invoice_id)->first();
 
         if ($invoice->Discount > 0) {
             $percent = ($sub_sum * $request->Discount ) / 100;
