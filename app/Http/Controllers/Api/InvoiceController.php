@@ -108,8 +108,9 @@ class InvoiceController extends Controller
 
     public function create(Request $request)
     {
-		$this->validate($request, [
-			'customer_address' => 'required|string', 			
+		
+        $validator = Validator::make($request->all(), [
+            'customer_address' => 'required|string', 			
 			'Customer'           => 'required|string', 
 			'customer_vat'       => 'nullable', 
 			'customer_phone'     => 'required|integer|digits_between:9,9|starts_with:5',
@@ -125,8 +126,13 @@ class InvoiceController extends Controller
 			'meters_reading' => 'required|numeric|min:1',
 			'job_open_date' => 'required',
 			'delivery_date' => 'required',
-            'customer_id'=>'required',
-		]);
+            'customer_id'=>'required', 
+        
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
 
         $branch_id = auth()->user()->branch_id;
         $services_sum    = 0; //array_sum($request->service_value);
