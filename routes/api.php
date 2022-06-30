@@ -60,7 +60,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/invoiced/pending/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'invoiced_pending']);
 
     Route::post('/create/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'create']);
-  
+    Route::post('/create/service', [App\Http\Controllers\Api\InvoiceController::class, 'service_name']);
+
     Route::get('/encoded/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
 
 

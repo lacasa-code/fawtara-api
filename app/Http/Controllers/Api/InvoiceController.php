@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Branch;
 use App\Branch as AppBranch;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Invoiceservice;
 use App\Models\Electronicinvoice;
-use Illuminate\Http\Request;
-use App\Models\Branch;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
@@ -126,6 +127,7 @@ class InvoiceController extends Controller
 			'delivery_date' => 'required',
             'customer_id'=>'required',
 		]);
+
         $branch_id = auth()->user()->branch_id;
         $services_sum    = 0; //array_sum($request->service_value);
 		$paid_amount     = 0;
@@ -161,66 +163,72 @@ class InvoiceController extends Controller
             $invoice->vat_number         = $request->vat_number;
             $invoice->Status             = $request->Status;
             $invoice->Payment_type       = $request->Payment_type;
-           // $invoice->services_sum       = $services_sum;
+            //$invoice->services_sum       = $services_sum;
 
             //$invoice->total_amount       = $services_sum;
             //$invoice->grand_total        = $paid_amount;
             $invoice->tax                = 15;
             //$invoice->paid_amount        = $paid_amount;
-            $invoice->branch_id          = $branch_id;
+            $invoice->branch_id          = auth()->user()->branch_id;
 
 		    $invoice->save();
 
-            $service_name=$request->service_name;
-            $service_value=$request->service_value;
-            $qty=$request->qty;
+            return response()->json([
+                'status'=>true,
+                'message'=>trans('service created successfully'),
+                'code'=>200,
+                'data' =>  $invoice,
+            ],200);
+           
 
-            $data = array();
 
-            foreach($service_name as $service)
-            {
-             if(!empty($service))
-             {
-               $data[] =[
-                         'service_name' => $service_name,
-                         'service_value' => $service_value,
-                         'qty' => $qty,
+    }
 
-                         'invice_id' =>$invoice->id
-                        ];  
-                                       
-     
-            }}
-            Invoiceservice::insert($data);
-            $total = Invoiceservice::where('invoice_id', $invoice->id)->count();
-            $total1 = Invoiceservice::where('invoice_id', $invoice->id)->get();
+    public function service_name(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'service_name' => 'required|string',
+            'service_value' => 'required|numeric',
+            'qty' => 'required|integer',
+            'invice_id' => 'required', 
+        
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+        $service = new Invoiceservice();
+        $service->service_name=$request->service_name;
+        $service->service_value=$request->service_value;
+        $service->qty = $request->qty;
+        $service->invoice_id= $request->invoice_id;
+        $service->save();
+        
+        $sub_sum = Invoiceservice::where('invoice_id', $service->invoice_id)->sum('sub_total');
+        $invoice = Electronicinvoice::where('id', $service->invoice_id)->first();
 
-            $t = $total * $total1->qty;
-            $invoiceservice =Invoiceservice::where('invoice_id', $invoice->id)->get();
-            foreach($invoiceservice as $invoiceservices)
-            {
-                $invoiceservices->sub_total = $t ;
-                $invoiceservices->save();
-            }
-            $sub_sum = Invoiceservice::where('invoice_id', $invoice->id)->sum('sub_total');
+        if ($invoice->Discount > 0) {
+            $percent = ($sub_sum * $request->Discount ) / 100;
+            $total_amount = $sub_sum - $percent;
+        }else{
+            $total_amount = $sub_sum;
+        }
 
-            if ($request->Discount > 0) {
-                //return 'lll';
-                $percent = ($sub_sum * $request->Discount ) / 100;
-                $total_amount = $sub_sum - $percent;
-            }else{
-                $total_amount = $sub_sum;
-            }
+        $tax_percent = ($total_amount * 15) / 100;
+        $updated_amount = $total_amount + $tax_percent;
+
+        $invoice->services_sum       = $total_amount;
+        $invoice->total_amount       = $total_amount;
+        $invoice->paid_amount        = $updated_amount;
+        $invoice->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>trans('service created successfully'),
+            'code'=>200,
+            'data' =>  $service,
+        ],200);
+
     
-            $tax_percent = ($total_amount * 15) / 100;
-            $updated_amount = $total_amount + $tax_percent;
-    
-            $invoice->services_sum       = $total_amount;
-            $invoice->total_amount       = $total_amount;
-            $invoice->paid_amount        = $updated_amount;
-            $invoice->save();
-
-
     }
 
     public function search_final(Request $request)
