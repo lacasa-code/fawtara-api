@@ -12,14 +12,15 @@ use App\Models\Branch;
 class InvoiceController extends Controller
 {
     //list all final invoices
-    public function final_invoice()
+    public function final_invoice(Request $request)
     {
+        $page_size=$request->page_size ?? 10 ;
+
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
                                 ->where('final',1)
                                 ->whereNull('deleted_at')
                                 ->orderBy('id','DESC')
-                                ->get();
-
+                                ->paginate($page_size);
             return response()->json([
                         'status'=>true,
                         'message'=>'final invoices have been shown successfully',
@@ -30,14 +31,15 @@ class InvoiceController extends Controller
     }
 
     //list all pending invocies
-    public function pending_invoice()
+    public function pending_invoice(Request $request)
     {
+        $page_size=$request->page_size ?? 10 ;
+
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
                                 ->where('final',0)
                                 ->whereNull('deleted_at')
                                 ->orderBy('id','DESC')
-                                ->get();
-
+                                ->paginate($page_size);
             return response()->json([
                         'status'=>true,
                         'message'=>'Pending invoices have been shown successfully',
