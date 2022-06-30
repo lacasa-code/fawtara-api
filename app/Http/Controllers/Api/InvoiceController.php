@@ -40,6 +40,8 @@ class InvoiceController extends Controller
                                 ->whereNull('deleted_at')
                                 ->orderBy('id','DESC')
                                 ->paginate($page_size);
+
+
             return response()->json([
                         'status'=>true,
                         'message'=>'Pending invoices have been shown successfully',
