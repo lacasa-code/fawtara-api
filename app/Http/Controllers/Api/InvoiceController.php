@@ -368,4 +368,28 @@ class InvoiceController extends Controller
          ],200);
     }
 
+    public function get_invoice_data()
+    {
+        $auth_user               = auth()->user();
+		$auth_branch_id          = auth()->user()->branch_id;
+		$auth_branch             = Branch::findOrFail($auth_branch_id);
+		$auth_branch_vat_number  = $auth_branch->vat_number;
+	
+		$last_order  = Electronicinvoice::whereNull('deleted_at')->orderBy('id', 'desc')->first();
+	    // return $last_order;
+
+		if(!empty($last_order)){
+			$new_number1 = str_pad($last_order->Invoice_Number + 1, 8, 0, STR_PAD_LEFT);
+			$invoice_number= $new_number1;
+		}else{
+			$invoice_number = '00000001';
+		}
+
+        return response()->json([
+            'status'=>true,
+            'message'=>'invoice data',
+            'code'=>200,
+            'data'=>[$invoice_number,$auth_branch_vat_number,$auth_branch],
+         ],200);
+    }
 }
