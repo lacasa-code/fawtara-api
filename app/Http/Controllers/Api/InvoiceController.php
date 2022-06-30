@@ -203,6 +203,7 @@ class InvoiceController extends Controller
         $service->service_value=$request->service_value;
         $service->qty = $request->qty;
         $service->invoice_id= $request->invoice_id;
+        $service->sub_total = $request->qty * $request->service_value ;
         $service->save();
         
         $sub_sum = Invoiceservice::where('invoice_id', $request->invoice_id)->sum('sub_total');
