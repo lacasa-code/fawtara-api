@@ -190,7 +190,7 @@ class InvoiceController extends Controller
             'service_name' => 'required|string',
             'service_value' => 'required|numeric',
             'qty' => 'required|integer',
-            'invice_id' => 'required', 
+            'invoice_id' => 'required', 
         
         ]);
         if ($validator->fails()) 
