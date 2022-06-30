@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Invoiceservice;
 use App\Models\Electronicinvoice;
 use Illuminate\Http\Request;
 
@@ -102,11 +103,7 @@ class InvoiceController extends Controller
     public function create(Request $request)
     {
 		$this->validate($request, [
-			'customer_address' => 'required|string', 
-			//'service_name.0'   => 'required',
-			//'service_value.0'   => 'required|numeric|min:1',
-			//'qty.0'   => 'required|integer|min:1',
-			
+			'customer_address' => 'required|string', 			
 			'Customer'           => 'required|string', 
 			'customer_vat'       => 'nullable', 
 			'customer_phone'     => 'required|integer|digits_between:9,9|starts_with:5',
@@ -120,18 +117,104 @@ class InvoiceController extends Controller
 			'registeration' => 'required|integer|digits_between:1,4', 
 			'fleet_number' => 'required|string',   // manufacturer
 			'meters_reading' => 'required|numeric|min:1',
-			/*'service_name.1'   => 'nullable',
-			'service_value.1'   => 'nullable|numeric',
-			'service_name.2'   => 'nullable',
-			'service_value.2'   => 'nullable|numeric',
-			'service_name.3'   => 'nullable',
-			'service_value.3'   => 'nullable|numeric',
-			'service_name.4'   => 'nullable',
-			'service_value.4'   => 'nullable|numeric',*/
 			'job_open_date' => 'required',
 			'delivery_date' => 'required',
+            'customer_id'=>'required',
 		]);
         $branch_id = auth()->user()->branch_id;
+        $services_sum    = 0; //array_sum($request->service_value);
+		$paid_amount     = 0;
+		$reg_chars       = str_replace(' ', '', $request->reg_chars);
+		
+	    $invoice = new Electronicinvoice;
+    
+		    $invoice->Invoice_type       = 'service';
+            $invoice->Invoice_Number     = $request->Invoice_Number;
+            $invoice->Customer           = $request->Customer;
+            $invoice->customer_address   = $request->customer_address;
+            $invoice->customer_vat       = $request->customer_vat;
+            $invoice->customer_phone     = $request->customer_phone;
+            $invoice->phone_code         = $request->phone_code;
+           // $invoice->customer_number    = $request->customer_number;
+            $invoice->Job_card           = $request->Job_card;
+            $invoice->quotation_number   = $request->quotation_number;
+            $invoice->customer_po_number = $request->customer_po_number;
+            $invoice->branch_name        = $request->branch_name;
+            $invoice->meters_reading     = $request->meters_reading;
+            $invoice->fleet_number       = $request->fleet_number;
+            $invoice->registeration      = $request->registeration;
+            $invoice->reg_chars          = $reg_chars; 
+            $invoice->manufacturer       = $request->manufacturer;
+            $invoice->chassis_no         = $request->chassis_no;
+            $invoice->model_name         = $request->model_name;
+            $invoice->customer_id        = $request->user_id;
+            $invoice->Date               = $request->Date;
+            $invoice->Discount           = $request->Discount;
+            $invoice->job_open_date      = $request->job_open_date;
+            $invoice->delivery_date      = $request->delivery_date;
+            $invoice->Details            = $request->Details;
+            $invoice->vat_number         = $request->vat_number;
+            $invoice->Status             = $request->Status;
+            $invoice->Payment_type       = $request->Payment_type;
+            $invoice->services_sum       = $services_sum;
+
+            $invoice->total_amount       = $services_sum;
+            $invoice->grand_total        = $paid_amount;
+            $invoice->tax                = 15;
+            $invoice->paid_amount        = $paid_amount;
+            $invoice->branch_id          = $branch_id;
+
+		    $invoice->save();
+
+            $service_name=$request->service_name;
+            $service_value=$request->service_value;
+            $qty=$request->qty;
+
+            $data = array();
+
+            foreach($service_name as $service)
+            {
+             if(!empty($service))
+             {
+               $data[] =[
+                         'service_name' => $service_name,
+                         'service_value' => $service_value,
+                         'qty' => $qty,
+
+                         'invice_id' =>$invoice->id
+                        ];  
+                                       
+     
+            }}
+            Invoiceservice::insert($data);
+            $total = Invoiceservice::where('invoice_id', $invoice->id)->count();
+            $total1 = Invoiceservice::where('invoice_id', $invoice->id)->get();
+
+            $t = $total * $total1->qty;
+            $invoiceservice =Invoiceservice::where('invoice_id', $invoice->id)->get();
+            foreach($invoiceservice as $invoiceservices)
+            {
+                $invoiceservices->sub_total = $t ;
+                $invoiceservices->save();
+            }
+            $sub_sum = Invoiceservice::where('invoice_id', $invoice->id)->sum('sub_total');
+
+            if ($request->Discount > 0) {
+                //return 'lll';
+                $percent = ($sub_sum * $request->Discount ) / 100;
+                $total_amount = $sub_sum - $percent;
+            }else{
+                $total_amount = $sub_sum;
+            }
+    
+            $tax_percent = ($total_amount * 15) / 100;
+            $updated_amount = $total_amount + $tax_percent;
+    
+            $invoice->services_sum       = $total_amount;
+            $invoice->total_amount       = $total_amount;
+            $invoice->paid_amount        = $updated_amount;
+            $invoice->save();
+
 
     }
 

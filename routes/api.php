@@ -59,4 +59,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/invoiced/pending/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'invoiced_pending']);
 
+    Route::post('/create/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'create']);
+  
 });
