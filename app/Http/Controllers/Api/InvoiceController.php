@@ -6,6 +6,7 @@ use App\Models\Branch;
 use App\Branch as AppBranch;
 use Illuminate\Http\Request;
 use App\Models\Invoiceservice;
+use Illuminate\Support\Carbon;
 use App\Models\Electronicinvoice;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -327,6 +328,42 @@ class InvoiceController extends Controller
             'message'=>'encoded data has been generated successfully',
             'code'=>200,
             'data'=>$qr,
+         ],200);
+    }
+
+    public function filter_final(Request $request)
+    {
+        $start_date = Carbon::parse($request->start_date)
+                             ->toDateTimeString();
+
+       $end_date = Carbon::parse($request->end_date)
+                             ->toDateTimeString();
+        $page_size=$request->page_size ?? 10 ;
+
+        $invoice = Electronicinvoice::wherer('final',1)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
+        return response()->json([
+            'status'=>true,
+            'message'=>'filter result',
+            'code'=>200,
+            'data'=>$invoice,
+         ],200);
+    }
+
+    public function filter_pending(Request $request)
+    {
+        $start_date = Carbon::parse($request->start_date)
+                             ->toDateTimeString();
+
+       $end_date = Carbon::parse($request->end_date)
+                             ->toDateTimeString();
+        $page_size=$request->page_size ?? 10 ;
+
+        $invoice = Electronicinvoice::wherer('final',0)->whereBetween('created_at', [$start_date, $end_date])->paginate($page_size);
+        return response()->json([
+            'status'=>true,
+            'message'=>'filter result',
+            'code'=>200,
+            'data'=>$invoice,
          ],200);
     }
 
