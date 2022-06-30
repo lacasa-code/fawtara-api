@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Branch as AppBranch;
 use App\Http\Controllers\Controller;
-use App\Invoiceservice;
+use App\Models\Invoiceservice;
 use App\Models\Electronicinvoice;
 use Illuminate\Http\Request;
+use App\Models\Branch;
 
 class InvoiceController extends Controller
 {
@@ -290,6 +292,7 @@ class InvoiceController extends Controller
         $invoice = Electronicinvoice::where('id',$id)->first();
         $invoice_datetimez     = $invoice->Date .' '.$invoice->created_at->format('H:i:s');
         $seller_name   = $invoice->branch_name;
+        //$branch=Branch::where('id',$invoice->branch_id)->first();
         $vat_registration_number    = $invoice->branch->vat_number;
         $invoice_amount    = $invoice->paid_amount;
         $invoice_tax_amount = ( $invoice->total_amount * 15 ) / 100;
