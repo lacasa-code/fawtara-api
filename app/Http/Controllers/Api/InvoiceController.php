@@ -388,7 +388,11 @@ class InvoiceController extends Controller
             'status'=>true,
             'message'=>'invoice data',
             'code'=>200,
-            'data'=>[$invoice_number,$auth_branch_vat_number,$auth_branch],
+            'data'=>[
+                'invoice_number'=>$invoice_number,
+                'auth_branch_vat_number'=>$auth_branch_vat_number,
+                'current branch data'=>$auth_branch
+            ],
          ],200);
     }
 }
