@@ -41,7 +41,7 @@ class AuthController extends Controller
         {
             return response()->json(
                 ['status'=>false,
-                'message'=>trans('app.log_in_error'),
+                'message'=>trans('Inavalid email or password please try again'),
                 'code'=>401],401);
         }
         $user = auth()->user();
@@ -52,7 +52,7 @@ class AuthController extends Controller
     public function logout() 
     {
         auth()->logout();
-        return response()->json(['status'=>true,'message'=>trans('app.logout_success'),'code'=>200],200);
+        return response()->json(['status'=>true,'message'=>trans('user successfully logout'),'code'=>200],200);
     }
 
     public function refresh() 

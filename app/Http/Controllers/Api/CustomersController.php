@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Validator;
 class CustomersController extends Controller
 {
 
-    public function GetListCustomers()
+    public function GetListCustomers(Request $request)
     {
-        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->orderBy('id', 'desc')->get();
+        $page_size=$request->page_size ?? 10 ;
+        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->orderBy('id', 'desc')->paginate($page_size);
         
         return response()->json([
             'status'=>true,
