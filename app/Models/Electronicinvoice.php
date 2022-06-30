@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Electronicinvoice extends Model
 {
     use HasFactory;
+    protected $table = 'electronicinvoices';
 
     protected $fillable = [
         'Invoice_type',
@@ -50,15 +51,7 @@ class Electronicinvoice extends Model
         'customer_id'
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
 
-
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     public function services()
     {
