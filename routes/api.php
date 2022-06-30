@@ -64,5 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/encoded/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
 
-
+    Route::get('/filter/final/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_final']);
+    Route::get('/filter/pending/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_pending']);
+   
 });
