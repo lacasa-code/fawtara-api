@@ -156,12 +156,12 @@ class InvoiceController extends Controller
             $invoice->vat_number         = $request->vat_number;
             $invoice->Status             = $request->Status;
             $invoice->Payment_type       = $request->Payment_type;
-            $invoice->services_sum       = $services_sum;
+           // $invoice->services_sum       = $services_sum;
 
-            $invoice->total_amount       = $services_sum;
-            $invoice->grand_total        = $paid_amount;
+            //$invoice->total_amount       = $services_sum;
+            //$invoice->grand_total        = $paid_amount;
             $invoice->tax                = 15;
-            $invoice->paid_amount        = $paid_amount;
+            //$invoice->paid_amount        = $paid_amount;
             $invoice->branch_id          = $branch_id;
 
 		    $invoice->save();
@@ -283,6 +283,31 @@ class InvoiceController extends Controller
                 'code'=>200,
                 'data'=>$invoice,
             ],200);
+    }
+
+    public function encode_date($id )
+    {
+        $invoice = Electronicinvoice::where('id',$id)->get();
+        $inv_number   = $invoice->Invoice_Number;
+        $invoice_datetimez     = $invoice->Date .' '.$invoice->created_at->format('H:i:s');
+        $seller_name   = $invoice->branch_name;
+        $vat_registration_number    = $invoice->branch->vat_number;
+        $invoice_amount    = $invoice->paid_amount;
+        $invoice_tax_amount = ( $invoice->total_amount * 15 ) / 100;
+
+        $result = chr(1) . chr( strlen($seller_name) ) . $seller_name;
+        $result.= chr(2) . chr( strlen($vat_registration_number) ) . $vat_registration_number;
+        $result.= chr(3) . chr( strlen($invoice_datetimez) ) . $invoice_datetimez;
+        $result.= chr(4) . chr( strlen($invoice_amount) ) . $invoice_amount;
+        $result.= chr(5) . chr( strlen($invoice_tax_amount) ) . $invoice_tax_amount;
+        $qr = base64_encode($result); 
+
+        return response()->json([
+            'status'=>true,
+            'message'=>'encoded data has been generated successfully',
+            'code'=>200,
+            'data'=>$qr,
+         ],200);
     }
 
 }
