@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/create/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'create']);
   
-    Route::get('/encoded/data', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
+    Route::get('/encoded/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
 
 
 });
