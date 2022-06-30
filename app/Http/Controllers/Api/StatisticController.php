@@ -16,7 +16,7 @@ class StatisticController extends Controller
     public function GetStatistic()
     {
         $Customers = Customer::where('branch_id',auth()->user()->branch_id)->count();
-        $Invoices = Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('final',1)->count();
+        $Invoices = Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('deleted_at','NULL')->where('final',1)->count();
         $Jobs = Electronicinvoice::where([
             'branch_id' => auth()->user()->branch_id,
             'final' => 0,
