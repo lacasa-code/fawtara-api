@@ -67,4 +67,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/filter/final/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_final']);
     Route::get('/filter/pending/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_pending']);
    
+    Route::get('/invoice/data', [App\Http\Controllers\Api\InvoiceController::class, 'get_invoice_data']);
+
 });
