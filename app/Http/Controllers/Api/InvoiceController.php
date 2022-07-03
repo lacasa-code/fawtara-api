@@ -525,15 +525,16 @@ class InvoiceController extends Controller
                 $image->path = $path;
                 $image->invoice_id = $invoice_id;
                 $image->save();
-            }
-        
         }
-       return response()->json([
+        return response()->json([
             'status'=>true,
             'message'=>trans('Image stored successfully'),
             'code'=>200,
-            'data'=>$image,
-        ],200);       /* foreach($request->file('path') as $image)
+            //'data'=>$image,
+        ],200); 
+        
+    }
+             /* foreach($request->file('path') as $image)
         {
             $image = new InvoiceImage();
             $uploadFolder = 'invoice';
