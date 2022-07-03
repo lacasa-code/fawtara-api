@@ -70,6 +70,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/filter/pending/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_pending']);
    
     Route::get('/invoice/data', [App\Http\Controllers\Api\InvoiceController::class, 'get_invoice_data']);
-    Route::get('/service/data', [App\Http\Controllers\Api\InvoiceController::class, 'get_service_data']);
+    Route::get('/service/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'get_service_data']);
 
 });
