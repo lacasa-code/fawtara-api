@@ -501,21 +501,51 @@ class InvoiceController extends Controller
             return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
         }
 
-        $image = new InvoiceImage();
+        if(!$request->hasFile('path')) {
+            return response()->json(
+                ['upload_file_not_found'],
+                 400);
+        }
+        $files = $request->file('path'); 
 
-        $uploadFolder = 'invoice';
-        $image = $request->file('path');
-        $image_uploaded_path = $image->store($uploadFolder, 'public');
-        $image->path=Storage::disk('public')->url($image_uploaded_path);
-        $image->invoice_id = $request->invoice_id;
-        $image->save();
-        return response()->json([
+ 
+    foreach ($files as $file) 
+    {      
+ 
+        foreach($request->fileName as $mediaFiles) {
+ 
+                $uploadFolder = 'product';
+                $image_uploaded_path = $mediaFiles->store($uploadFolder, 'public');
+                $path=Storage::disk('public')->url($image_uploaded_path);
+                //$path = $mediaFiles->store('public/images');
+                $invoice_id = $request->invoice_id;
+      
+                //store image file into directory and db
+                $image = new InvoiceImage();
+                $image->path = $path;
+                $image->invoice_id = $invoice_id;
+                $image->save();
+            }
+        
+        }
+       return response()->json([
             'status'=>true,
             'message'=>trans('Image stored successfully'),
             'code'=>200,
             'data'=>$image,
-        ],200);
-    }    
+        ],200);       /* foreach($request->file('path') as $image)
+        {
+            $image = new InvoiceImage();
+            $uploadFolder = 'invoice';
+            $image = $request->file('path');
+            $image_uploaded_path = $image->store($uploadFolder, 'public');
+            $image->path=Storage::disk('public')->url($image_uploaded_path);
+            $image->invoice_id = $request->invoice_id;
+            $image->save();
+        }*/
+        
+    } 
+
     public function get_images($id)
     {
         $image=InvoiceImage::where('invoice_id',$id)->get();
