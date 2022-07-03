@@ -115,10 +115,10 @@ class AuthController extends Controller
         {
             return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
         }
-
+        $password = $user->password;
         $user->name=$request->input('name');
         $user->lastname=$request->input('lastname');
-        $user->password=bcrypt($request->input('password'));
+        $user->password=bcrypt($password);
         $user->mobile_no=$request->input('mobile_no');
         $user->email=$request->input('email');
         $user->gender=$request->input('gender');
