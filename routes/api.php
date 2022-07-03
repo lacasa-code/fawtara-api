@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/create/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'create']);
     Route::post('/create/service', [App\Http\Controllers\Api\InvoiceController::class, 'service_name']);
+    Route::post('/update/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'update_invoice']);
+    Route::post('/update/service', [App\Http\Controllers\Api\InvoiceController::class, 'update_service']);
 
     Route::get('/encoded/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
 
@@ -68,5 +70,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/filter/pending/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'filter_pending']);
    
     Route::get('/invoice/data', [App\Http\Controllers\Api\InvoiceController::class, 'get_invoice_data']);
+    Route::get('/service/data', [App\Http\Controllers\Api\InvoiceController::class, 'get_service_data']);
 
 });

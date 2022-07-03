@@ -120,7 +120,7 @@ class InvoiceController extends Controller
 			'quotation_number'   => 'nullable', 
 			'Discount' => 'nullable|numeric|min:1',
 			'model_name'    => 'required|string', 
-			'chassis_no'    => 'required', 
+			'chassis_no'    => 'required|max:17|min:17', 
 			'manufacturer'  => 'required|integer',
 			'reg_chars'     => 'required|string|min:1|max:3', 
 			'registeration' => 'required|integer|digits_between:1,4', 
@@ -395,5 +395,95 @@ class InvoiceController extends Controller
                 'current branch data'=>$auth_branch
             ],
          ],200);
+    }
+
+    public function update_invoice($id,Request $request)
+    {
+        $invoice =Electronicinvoice::where('final',0)->where('id',$id)->first();
+        $validator = Validator::make($request->all(), [
+            'customer_address' => 'required|string', 			
+			'Customer'           => 'required|string', 
+			'customer_vat'       => 'nullable', 
+			'customer_phone'     => 'required|integer|digits_between:9,9|starts_with:5',
+			'customer_po_number' => 'nullable|integer', 
+			'quotation_number'   => 'nullable', 
+			'Discount' => 'nullable|numeric|min:1',
+			'model_name'    => 'required|string', 
+			'chassis_no'    => 'required', 
+			'manufacturer'  => 'required|integer',
+			'reg_chars'     => 'required|string|min:1|max:3', 
+			'registeration' => 'required|integer|digits_between:1,4', 
+			'fleet_number' => 'required|string',   // manufacturer
+			'meters_reading' => 'required|numeric|min:1',
+			'job_open_date' => 'required',
+			'delivery_date' => 'required',
+            'customer_id'=>'required', 
+        
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+
+        $invoice->customer_address=$request->input('customer_address');
+        $invoice->Customer=$request->input('Customer');
+        $invoice->customer_vat=$request->input('customer_vat');
+        $invoice->customer_phone=$request->input('customer_phone');
+        $invoice->customer_po_number=$request->input('customer_po_number');
+        $invoice->quotation_number=$request->input('quotation_number');
+        $invoice->Discount=$request->input('Discount');
+        $invoice->model_name=$request->input('model_name');
+        $invoice->chassis_no=$request->input('chassis_no');
+        $invoice->manufacturer=$request->input('manufacturer');
+        $invoice->reg_chars=$request->input('reg_chars');
+        $invoice->registeration=$request->input('registeration');
+        $invoice->job_open_date=$request->input('job_open_date');
+        $invoice->customer_id=$request->input('customer_id');
+        $invoice->meters_reading=$request->input('meters_reading');
+        $invoice->fleet_number=$request->input('fleet_number');
+        $invoice->Details=$request->input('Details');
+        $invoice->Status=$request->input('Status');
+        $invoice->Payment_type=$request->input('Payment_type');
+        $invoice->Date=$request->input('Date');
+        $invoice->Job_card=$request->input('Job_card');
+
+        $invoice->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>'invoice data updated successfully',
+            'code'=>200,
+            'data'=>$invoice,
+        ],200);
+    }
+
+    public function get_service_data($id)
+    {
+        $service = Invoiceservice::where('invoice_id',$id)->whereNull('deleted_at')->get();
+        return response()->json([
+                        'status'=>true,
+                        'message'=>'invoice services have been shown successfully',
+                        'code'=>200,
+                        'data'=>$service,
+                     ],200);
+
+    }
+
+    public function update_service($id, Request $request)
+    {
+        $service = Invoiceservice::where('id',$id)->first();
+
+        $service->service_name=$request->input('service_name');
+        $service->service_value=$request->input('service_value');
+        $service->qty=$request->input('qty');
+        $service->sub_total=$request->input('sub_total');
+
+        $service->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>'service data updated successfully',
+            'code'=>200,
+            'data'=>$service,
+        ],200);
+
     }
 }
