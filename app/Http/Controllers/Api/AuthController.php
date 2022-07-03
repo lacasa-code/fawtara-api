@@ -115,16 +115,35 @@ class AuthController extends Controller
         {
             return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
         }
-        $password = $user->password;
-        $user->name=$request->input('name');
+
+        /*$user->name=$request->input('name');
         $user->lastname=$request->input('lastname');
-        $user->password=bcrypt($password);
+        $user->password=bcrypt($request->input('password'));
         $user->mobile_no=$request->input('mobile_no');
         $user->email=$request->input('email');
         $user->gender=$request->input('gender');
-        $user->birth_date=$request->input('birth_date');
+        $user->birth_date=$request->input('birth_date');*/
+        
+        
+        $email = $request->email;
+		$password = $request->password;
+		$mobile_no = $request->mobile_no;
+		$firstname = $request->firstname;
+		$lastname = $request->lastname;
+		$gender = $request->gender;
+		$birth_date = $request->birth_date;
 
+		$user->name = $firstname;
+		$user->lastname = $lastname;
+		$user->gender = $gender;
+		$user->birth_date = $birth_date;	
+		$user->email = $email;
+        $user->mobile_no = $mobile_no;
+		if(!empty($password)){
+			$user->password = bcrypt($password);
+		}
         $user->save();
+
         return response()->json([
             'status'=>true,
             'message'=>'user data updated successfully',
