@@ -512,7 +512,7 @@ class InvoiceController extends Controller
     foreach ($files as $file) 
     {      
  
-        foreach($request->fileName as $mediaFiles) {
+        foreach($request->path as $mediaFiles) {
  
                 $uploadFolder = 'product';
                 $image_uploaded_path = $mediaFiles->store($uploadFolder, 'public');
