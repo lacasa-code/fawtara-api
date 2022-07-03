@@ -492,7 +492,7 @@ class InvoiceController extends Controller
     public function store_image(Request $request)
     {
          $validator = Validator::make($request->all(), [
-            'path' => 'required',
+            'path',
             'invoice_id' => 'required', 
         
         ]);
