@@ -12,7 +12,10 @@ class InvoiceImage extends Model
 
     protected $table = 'invoice_images';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'path',
+        'invoice_id',
+    ];
 
 
 }
