@@ -516,5 +516,14 @@ class InvoiceController extends Controller
             'data'=>$image,
         ],200);
     }    
-
+    public function get_images($id)
+    {
+        $image=InvoiceImage::where('invoice_id',$id)->get();
+        return response()->json([
+            'status'=>true,
+            'message'=>trans('Image shown successfully'),
+            'code'=>200,
+            'data'=>$image,
+        ],200);
+    }
 }

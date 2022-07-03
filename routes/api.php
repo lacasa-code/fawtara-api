@@ -73,5 +73,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/service/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'get_service_data']);
 
     Route::post('/invoice/image', [App\Http\Controllers\Api\InvoiceController::class, 'store_image']);
+    Route::post('/invoice/image/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'get_images']);
 
 });
