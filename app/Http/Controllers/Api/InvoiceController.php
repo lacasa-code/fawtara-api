@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Branch;
 use App\Branch as AppBranch;
+use App\Models\InvoiceImage;
 use Illuminate\Http\Request;
 use App\Models\Invoiceservice;
 use Illuminate\Support\Carbon;
 use App\Models\Electronicinvoice;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
@@ -486,6 +488,32 @@ class InvoiceController extends Controller
 
     }
 
+    public function store_image(Request $request)
+    {
+         $validator = Validator::make($request->all(), [
+            'path' => 'required',
+            'invoice_id' => 'required', 
         
+        ]);
+        if ($validator->fails()) 
+        {
+            return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
+        }
+
+        $image = new InvoiceImage();
+
+        $uploadFolder = 'invoice';
+        $image = $request->file('path');
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $image->path=Storage::disk('public')->url($image_uploaded_path);
+        $image->invoice_id = $request->invoice_id;
+        $image->save();
+        return response()->json([
+            'status'=>true,
+            'message'=>trans('Image stored successfully'),
+            'code'=>200,
+            'data'=>$image,
+        ],200);
+    }    
 
 }
