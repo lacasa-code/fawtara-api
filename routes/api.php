@@ -61,8 +61,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/create/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'create']);
     Route::post('/create/service', [App\Http\Controllers\Api\InvoiceController::class, 'service_name']);
-    Route::post('/update/invoice', [App\Http\Controllers\Api\InvoiceController::class, 'update_invoice']);
-    Route::post('/update/service', [App\Http\Controllers\Api\InvoiceController::class, 'update_service']);
+    Route::post('/update/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'update_invoice']);
+    Route::post('/update/service/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'update_service']);
 
     Route::get('/encoded/data/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'encode_date']);
 
