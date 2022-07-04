@@ -102,6 +102,7 @@ class InvoiceController extends Controller
     {
         $invoice=Electronicinvoice::where('id',$id)->where('final',0)->first();
         $invoice->final = 1 ;
+        $invoice->save();
         return response()->json([
             'status'=>true,
             'message'=>'pending invoice has been invoiced successfully',
