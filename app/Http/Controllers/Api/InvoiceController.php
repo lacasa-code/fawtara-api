@@ -10,6 +10,7 @@ use App\Models\Invoiceservice;
 use Illuminate\Support\Carbon;
 use App\Models\Electronicinvoice;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -518,9 +519,10 @@ class InvoiceController extends Controller
                 $uploadFolder = 'product';
                 $image_uploaded_path = $mediaFiles->store($uploadFolder, 'public');
                 //$path=Storage::disk('public')->put($image_uploaded_path,$mediaFiles);
-                $path =$mediaFiles->store('storage/product');
+                //$path =$mediaFiles->store('storage/product');
                 $invoice_id = $request->invoice_id;
-      
+                $path= Storage::disk('public')->put($uploadFolder . $mediaFiles, File::get($file));
+
                 //store image file into directory and db
                 $image = new InvoiceImage();
                 $image->path = $path;
