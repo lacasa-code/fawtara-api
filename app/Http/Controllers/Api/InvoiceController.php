@@ -517,7 +517,7 @@ class InvoiceController extends Controller
  
                 $uploadFolder = 'product';
                 $image_uploaded_path = $mediaFiles->store($uploadFolder, 'public');
-                $path=Storage::disk('public')->url($image_uploaded_path);
+                $path=Storage::disk('public')->$image_uploaded_path;
                 //$path = $mediaFiles->store('public/images');
                 $invoice_id = $request->invoice_id;
       
