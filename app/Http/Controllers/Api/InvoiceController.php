@@ -518,10 +518,10 @@ class InvoiceController extends Controller
  
                 $uploadFolder = 'product';
                 $image_uploaded_path = $mediaFiles->store($uploadFolder, 'public');
-                //$path=Storage::disk('public')->put($image_uploaded_path,$mediaFiles);
+                $path=Storage::disk('public')->url($image_uploaded_path);
                 //$path =$mediaFiles->store('storage/product');
                 $invoice_id = $request->invoice_id;
-                $path= Storage::disk('public')->put($uploadFolder . $mediaFiles, $file);
+                //$path= Storage::disk('public')->put($uploadFolder . $mediaFiles, $file);
 
                 //store image file into directory and db
                 $image = new InvoiceImage();
@@ -576,10 +576,10 @@ class InvoiceController extends Controller
     {
         $img =InvoiceImage::where('id',$id)->firstorfail();
         $files = $request->file('path'); 
-        //$uploadFolder = 'product';
-        //$image_uploaded_path = $files->store($uploadFolder, 'public');
+        $uploadFolder = 'product';
+        $image_uploaded_path = $files->store($uploadFolder, 'public');
         //$path=Storage::disk('public')->put($image_uploaded_path,$mediaFiles);
-        $img->path =$files->store('storage/product');
+        $img->path =Storage::disk('public')->url($image_uploaded_path);
         $img->invoice_id = $request->input('invoice_id');
         $img->save();
 
