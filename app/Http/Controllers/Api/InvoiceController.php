@@ -558,4 +558,15 @@ class InvoiceController extends Controller
             'data'=>$image,
         ],200);
     }
+
+    public function delete_image($id)
+    {
+        $img =InvoiceImage::where('id',$id)->firstorfail()->delete();
+        
+        return response()->json([
+            'status'=>true,
+            'message'=>'Car deleted successfully',
+            'code'=>200,
+        ],200);
+    }
 }

@@ -74,5 +74,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/invoice/image', [App\Http\Controllers\Api\InvoiceController::class, 'store_image']);
     Route::get('/invoice/image/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'get_images']);
+    Route::post('/delete/invoice/image/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'delete_image']);
 
 });
