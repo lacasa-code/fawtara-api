@@ -565,8 +565,28 @@ class InvoiceController extends Controller
         
         return response()->json([
             'status'=>true,
-            'message'=>'Car deleted successfully',
+            'message'=>'image deleted successfully',
             'code'=>200,
         ],200);
+    }
+
+    public function update_image($id,Request $request)
+    {
+        $img =InvoiceImage::where('id',$id)->firstorfail();
+        $files = $request->file('path'); 
+        //$uploadFolder = 'product';
+        //$image_uploaded_path = $files->store($uploadFolder, 'public');
+        //$path=Storage::disk('public')->put($image_uploaded_path,$mediaFiles);
+        $img->path =$files->store('storage/product');
+        $img->invoice_id = $request->input('invoice_id');
+        $img->save();
+
+        return response()->json([
+            'status'=>true,
+            'message'=>'image updated successfully',
+            'code'=>200,
+            'data'=>$img,
+        ],200);
+
     }
 }
