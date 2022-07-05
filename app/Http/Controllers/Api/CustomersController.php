@@ -27,6 +27,17 @@ class CustomersController extends Controller
         ],200);
     }
 
+    public function ListCustomers(Request $request)
+    {
+        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->orderBy('id', 'desc')->get();
+        
+        return response()->json([
+            'status'=>true,
+            'code'=>200,
+            'Customers' =>  $Customers,
+        ],200);
+    }
+
     public function ShowCustomer(Request $request)
     {
         if(!empty($request->Customer_id)){
