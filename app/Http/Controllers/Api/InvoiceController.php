@@ -247,6 +247,7 @@ class InvoiceController extends Controller
     public function search_final(Request $request)
     {
         $keyword = $request->input('keyword');
+        $page_size=$request->page_size ?? 10 ;
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
             ->where('final',1)
             ->where(function ($query) use($keyword) {
@@ -260,8 +261,7 @@ class InvoiceController extends Controller
                ->orWhere('Status', 'like', '%' . $keyword . '%')
                ->orWhere('Customer', 'like', '%' . $keyword . '%');
         
-          })
-            ->get();
+          })->paginate($page_size);
         if (!$invoice)
         {
             return response()->json(['status'=>false,
@@ -281,6 +281,7 @@ class InvoiceController extends Controller
     public function search_pending(Request $request)
     {
         $keyword = $request->input('keyword');
+        $page_size=$request->page_size ?? 10 ;
         $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
             ->where('final',0)
             ->where(function ($query) use($keyword) {
@@ -294,7 +295,7 @@ class InvoiceController extends Controller
                ->orWhere('Status', 'like', '%' . $keyword . '%')
                ->orWhere('Customer', 'like', '%' . $keyword . '%');
         
-          })->get();
+          })->paginate($page_size);
         if (!$invoice)
         {
             return response()->json(['status'=>false,
