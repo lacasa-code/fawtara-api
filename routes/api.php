@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/final/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'final_invoice']);
     Route::get('/pending/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'pending_invoice']);
+    Route::get('/export/final/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'export_final_invoice']);
+    Route::get('/export/pending/invoices', [App\Http\Controllers\Api\InvoiceController::class, 'export_pending_invoice']);
+  
     Route::get('/show/final/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'show_final_invoice']);
     Route::get('/show/pending/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'show_pending_invoice']);
     Route::get('/perview/final/invoice/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'preview_final_invoice']);

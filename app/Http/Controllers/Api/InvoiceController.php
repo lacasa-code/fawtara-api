@@ -16,6 +16,43 @@ use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
 {
+    public function export_final_invoice(Request $request)
+    {
+
+        $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
+                                ->where('final',1)
+                                ->whereNull('deleted_at')
+                                ->orderBy('id','DESC')
+                                ->get();
+            return response()->json([
+                        'status'=>true,
+                        'message'=>'final invoices have been shown successfully',
+                        'code'=>200,
+                        'data'=>$invoice,
+                     ],200);
+
+    }
+
+    //list all pending invocies
+    public function export_pending_invoice(Request $request)
+    {
+        $page_size=$request->page_size ?? 10 ;
+
+        $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
+                                ->where('final',0)
+                                ->whereNull('deleted_at')
+                                ->orderBy('id','DESC')
+                                ->get();
+
+
+            return response()->json([
+                        'status'=>true,
+                        'message'=>'Pending invoices have been shown successfully',
+                        'code'=>200,
+                        'data'=>$invoice,
+                     ],200);
+
+    }
     //list all final invoices
     public function final_invoice(Request $request)
     {
