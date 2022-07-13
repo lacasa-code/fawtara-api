@@ -81,4 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/delete/invoice/image/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'delete_image']);
     Route::post('/update/invoice/image/{id}', [App\Http\Controllers\Api\InvoiceController::class, 'update_image']);
 
+    Route::get('/reports', [App\Http\Controllers\Api\ReportController::class, 'total_reports']);
+    Route::get('/reports/date', [App\Http\Controllers\Api\ReportController::class, 'total_filter_date']);
+
 });
