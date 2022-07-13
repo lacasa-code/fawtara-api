@@ -286,9 +286,7 @@ class InvoiceController extends Controller
     {
         $keyword = $request->input('keyword');
         $page_size=$request->page_size ?? 10 ;
-        $invoice=Electronicinvoice::
-            select('*', DB::raw("CONCAT(electronicinvoices.registeration,' ',electronicinvoices.reg_chars) as plate_number"))
-            ->where('branch_id',auth()->user()->branch_id)
+        $invoice=Electronicinvoice::where('branch_id',auth()->user()->branch_id)
             ->where('final',1)
             ->where(function ($query) use($keyword) {
             $query->where('Invoice_Number', 'like', '%' . $keyword . '%')
@@ -298,7 +296,7 @@ class InvoiceController extends Controller
                ->orWhere('paid_amount', 'like', '%' . $keyword . '%')
                ->orWhere('reg_chars', 'like', '%' . $keyword . '%')
                ->orWhere('registeration', 'like', '%' . $keyword . '%')
-               ->orWhere('plate_number', 'like', '%' . $keyword . '%')
+               ->orWhere(DB::raw('CONCAT_WS(" ",registeration,reg_chars)'), 'like', '%' . $keyword . '%')
                ->orWhere('Status', 'like', '%' . $keyword . '%')
                ->orWhere('Customer', 'like', '%' . $keyword . '%');
         
