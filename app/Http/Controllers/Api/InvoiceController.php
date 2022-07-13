@@ -332,6 +332,7 @@ class InvoiceController extends Controller
                ->orWhere('reg_chars', 'like', '%' . $keyword . '%')
                ->orWhere('registeration', 'like', '%' . $keyword . '%')
                ->orWhere('Status', 'like', '%' . $keyword . '%')
+               ->orWhere(DB::raw('CONCAT_WS(" ",registeration,reg_chars)'), 'like', '%' . $keyword . '%')
                ->orWhere('Customer', 'like', '%' . $keyword . '%');
         
           })->paginate($page_size);
