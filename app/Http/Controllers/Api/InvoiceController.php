@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Electronicinvoice;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -631,5 +632,16 @@ class InvoiceController extends Controller
             'data'=>$img,
         ],200);
 
+    }
+
+    public function customer_number()
+    {
+        $Customers = Customer::where('branch_id',auth()->user()->branch_id)->count();
+        return response()->json([
+            'status'=>true,
+            'message'=>'number of customers retrived successfully',
+            'code'=>200,
+            'data'=>$Customers,
+        ],200);
     }
 }
