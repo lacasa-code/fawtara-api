@@ -29,7 +29,7 @@ class ReportController extends Controller
         $end = Carbon::parse($request->end_date)->toDateTimeString();
 
         $Total_Invoices = Electronicinvoice::where(['branch_id' => auth()->user()->branch_id,'final' => 1,'deleted_at' => NULL])
-                                    ->whereBetween('created_at', [$start, $end])->count();
+                                    ->whereBetween('Date', [$start, $end])->count();
         return response()->json([
             'status'=>true,
             'message'=>'filter result',
