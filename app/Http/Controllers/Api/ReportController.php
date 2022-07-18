@@ -33,10 +33,10 @@ class ReportController extends Controller
 
         $end = Carbon::parse($request->end_date)->toDateTimeString();
 
-        $Total_Invoices = Electronicinvoice::where(['branch_id' => auth()->user()->branch_id,'final' => 1,'deleted_at' => NULL])->whereBetween('Date', [$start, $end])->count();
+        $Total_Invoices = Electronicinvoice::where(['branch_id' => auth()->user()->branch_id,'final' => 1,'deleted_at' => NULL])->whereBetween('created_at', [$start, $end])->count();
         $page_size = $request->page_size ?? 10 ;
 
-        $invoices=Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->whereBetween('Date', [$start, $end])->orderBy('id','DESC')->paginate($page_size);
+        $invoices=Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->whereBetween('created_at', [$start, $end])->orderBy('id','DESC')->paginate($page_size);
            
         return response()->json([
             'status'=>true,
