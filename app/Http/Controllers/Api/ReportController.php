@@ -18,11 +18,13 @@ class ReportController extends Controller
         $page_size = $request->page_size ?? 10 ;
 
         $invoices=Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->orderBy('id','DESC')->paginate($page_size);
-           
+        $total_amounts =Electronicinvoice::select(DB::raw('SUM(paid_amount) as total_paid_amount'))->where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->get();   
+   
         return response()->json([
             'status'=>true,
             'code'=>200,
             'Total_Invoices' =>  $Total_Invoices,
+            'total_amount' =>$total_amounts,
             'data'=>$invoices,
         ],200);
 
@@ -44,7 +46,8 @@ class ReportController extends Controller
             'message'=>'filter result',
             'code'=>200,
             'Total_Invoices'=> $Total_Invoices,
-            'data'=>['total_amount' =>$total_amounts,'invoices' =>$invoices],
+            'total_amount' =>$total_amounts,
+            'data'=>$invoices,
          ],200);
     }
 }
