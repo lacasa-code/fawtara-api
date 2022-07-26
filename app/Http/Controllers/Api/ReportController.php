@@ -44,7 +44,7 @@ class ReportController extends Controller
             'message'=>'filter result',
             'code'=>200,
             'Total_Invoices'=> $Total_Invoices,
-            'data'=>['total_amount' =>$total_amounts,$invoices],
+            'data'=>['total_amount' =>$total_amounts,'invoices' =>$invoices],
          ],200);
     }
 }
