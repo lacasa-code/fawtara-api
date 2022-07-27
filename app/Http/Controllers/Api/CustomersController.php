@@ -66,7 +66,7 @@ class CustomersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|regex:/^[(a-zA-Z\s)\p{L}]+$/u|max:50',
-            'mail' => 'required|email|unique:customers,mail',
+            'mail' => 'nullable|email|unique:customers,mail',
             'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone',
             'address' => 'required', 
         
@@ -79,6 +79,13 @@ class CustomersController extends Controller
 		$address = $request->address;
 		$phone = $request->phone;
 		$mail = $request->mail;
+        
+        if(!empty($mail))
+		{
+			$mail = $mail;
+		}else{
+			$mail = null;
+		}
 
 		$customer = new Customer;
 		$customer->name = $name;
@@ -113,7 +120,7 @@ class CustomersController extends Controller
             //'phone' => 'required|min:9|max:9|digits:9|regex:/^[- +()]*[0-9][- +()0-9]*$/|unique:customers,phone',
             'address' => 'required', 
             'phone' => ['required', 'min:9','max:9','regex:/^[- +()]*[0-9][- +()0-9]*$/' ,'unique:customers,phone,'.$customer->id],
-            'mail' => ['required','string', 'email','unique:customers,mail,'.$customer->id],
+            'mail' => ['nullable','string', 'email','unique:customers,mail,'.$customer->id],
 
         ]);
         if ($validator->fails()) 
@@ -121,6 +128,13 @@ class CustomersController extends Controller
             return response()->json(['status'=>false,'message'=>$validator->errors(),'code'=>400],400);
         }
 
+        if(!empty($mail))
+		{
+			$mail = $mail;
+		}else{
+			$mail = null;
+		} 
+        
         $customer->name=$request->input('name');
         $customer->address=$request->input('address');
         $customer->mail=$request->input('mail');
