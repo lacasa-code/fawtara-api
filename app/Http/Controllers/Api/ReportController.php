@@ -47,7 +47,7 @@ class ReportController extends Controller
 
         $invoices=Electronicinvoice::where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->whereBetween('created_at', [$start, $end])->orderBy('id','DESC')->paginate($page_size);
         $total_amounts =Electronicinvoice::select(DB::raw('SUM(paid_amount) as total_paid_amount'))->where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->whereBetween('created_at', [$start, $end])->get();   
-        $total_amounts_without_tax =Electronicinvoice::select(DB::raw('SUM(total_amount) as total_without_tax_amount'))->where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->get();   
+        $total_amounts_without_tax =Electronicinvoice::select(DB::raw('SUM(total_amount) as total_without_tax_amount'))->where('branch_id',auth()->user()->branch_id)->where('final',1)->whereNull('deleted_at')->whereBetween('created_at', [$start, $end])->get();   
 
         return response()->json([
             'status'=>true,
