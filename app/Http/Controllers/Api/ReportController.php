@@ -35,12 +35,12 @@ class ReportController extends Controller
 
     public function total_filter_date(Request $request)
     {
-        //$start = Carbon::parse($request->start_date)->toDateTimeString();
+        $start = Carbon::parse($request->start_date)->toDateTimeString();
 
-        //$end = Carbon::parse($request->end_date)->toDateTimeString();
+        $end = Carbon::parse($request->end_date)->toDateTimeString();
 
-        $start =  Carbon::parse($request->start_date)->startOfDay()->format('Y-m-d H:i:s');
-        $end = Carbon::parse($request->end_date)->endOfDay()->format('Y-m-d H:i:s');
+        //$start =  Carbon::parse($request->start_date)->startOfDay()->format('Y-m-d H:i:s');
+        //$end = Carbon::parse($request->end_date)->endOfDay()->format('Y-m-d H:i:s');
 
         $Total_Invoices = Electronicinvoice::where(['branch_id' => auth()->user()->branch_id,'final' => 1,'deleted_at' => NULL])->whereBetween('created_at', [$start, $end])->count();
         $page_size = $request->page_size ?? 10 ;
